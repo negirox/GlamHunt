@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -15,7 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Calendar } from './ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { cn } from '@/lib/utils';
-import { CalendarIcon, CheckIcon, ChevronsUpDown } from 'lucide-react';
+import { CalendarIcon, Check, ChevronsUpDown } from 'lucide-react';
 import { format } from 'date-fns';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './ui/command';
 import { Badge } from './ui/badge';
@@ -297,7 +298,7 @@ export function RegisterForm() {
                   <FormField control={form.control} name="weight" render={({ field }) => (<FormItem><FormLabel>Weight (Optional)</FormLabel><FormControl><Input placeholder="e.g. 55 kg" {...field} /></FormControl><FormMessage /></FormItem>)} />
                   <FormField control={form.control} name="chestBust" render={({ field }) => (<FormItem><FormLabel>Chest/Bust (Optional)</FormLabel><FormControl><Input placeholder="e.g. 34 inches" {...field} /></FormControl><FormMessage /></FormItem>)} />
                   <FormField control={form.control} name="waist" render={({ field }) => (<FormItem><FormLabel>Waist (Optional)</FormLabel><FormControl><Input placeholder="e.g. 28 inches" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                  <FormField control={form.control} name="hips" render={({ field }) => (<FormItem><FormLabel>Hips (Optional)</FormLabel><FormControl><Input placeholder="e.g. 36 inches" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="hips" render={({ field }) => (<FormItem><FormLabel>Hips (Optional)</FormLabel><FormControl><Input placeholder="e.g. 36 inches" {...field} /></FormControl><FormMessage /></FormMessage /></FormItem>)} />
                   <FormField control={form.control} name="hairColor" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Hair Color (Optional)</FormLabel>
