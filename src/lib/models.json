@@ -1,0 +1,103 @@
+
+[
+  {
+    "id": "1",
+    "name": "Ananya Sharma",
+    "location": "Mumbai, India",
+    "specialties": ["Fashion", "Editorial", "Sabyasachi"],
+    "bio": "Ananya is a versatile fashion model with a striking presence, known for her captivating editorial shoots and runway walks for major Indian designers.",
+    "stats": {
+      "height": "5'9\"",
+      "bust": 32,
+      "waist": 25,
+      "hips": 35,
+      "shoe": 8,
+      "eyes": "Brown",
+      "hair": "Black"
+    },
+    "profileImage": "https://placehold.co/400x600.png",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "Rohan Mehra",
+    "location": "Delhi, India",
+    "specialties": ["Commercial", "Fitness", "Myntra"],
+    "bio": "Rohan's athletic build and friendly look make him a favorite for commercial and fitness campaigns across India. He is dedicated to promoting a healthy lifestyle.",
+    "stats": {
+      "height": "6'1\"",
+      "bust": 40,
+      "waist": 31,
+      "hips": 37,
+      "shoe": 10,
+      "eyes": "Dark Brown",
+      "hair": "Black"
+    },
+    "profileImage": "https://placehold.co/400x600.png",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "fitness workout" },
+      { "url": "https://placehold.co/800x600.png", "hint": "lifestyle commercial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "activewear catalogue" },
+      { "url": "https://placehold.co/600x800.png", "hint": "male portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "sports action" },
+      { "url": "https://placehold.co/600x800.png", "hint": "casual fashion" }
+    ]
+  },
+  {
+    "id": "3",
+    "name": "Priya Singh",
+    "location": "Bangalore, India",
+    "specialties": ["Haute Couture", "Manish Malhotra"],
+    "bio": "With an elegant and graceful look, Priya is a rising star in Indian haute couture. She thrives in creative projects and has worked with top designers.",
+    "stats": {
+      "height": "5'8\"",
+      "bust": 33,
+      "waist": 26,
+      "hips": 36,
+      "shoe": 7.5,
+      "eyes": "Black",
+      "hair": "Brown"
+    },
+    "profileImage": "https://placehold.co/400x600.png",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian bridal wear" },
+      { "url": "https://placehold.co/800x600.png", "hint": "fantasy photoshoot" },
+      { "url": "https://placehold.co/600x800.png", "hint": "dramatic makeup" },
+      { "url": "https://placehold.co/600x800.png", "hint": "elegant saree" },
+      { "url": "https://placehold.co/800x600.png", "hint": "conceptual art" },
+      { "url": "https://placehold.co/600x800.png", "hint": "profile shot" }
+    ]
+  },
+  {
+    "id": "4",
+    "name": "Vikram Rathore",
+    "location": "Jaipur, India",
+    "specialties": ["Runway", "Luxury Brands", "Raymond"],
+    "bio": "Vikram's sharp features and powerful walk have made him a sought-after runway model. He has a keen eye for fashion and has collaborated with prestigious luxury brands.",
+    "stats": {
+      "height": "6'0\"",
+      "bust": 39,
+      "waist": 32,
+      "hips": 37,
+      "shoe": 10,
+      "eyes": "Brown",
+      "hair": "Black"
+    },
+    "profileImage": "https://placehold.co/400x600.png",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "mens suit" },
+      { "url": "https://placehold.co/800x600.png", "hint": "luxury watch" },
+      { "url": "https://placehold.co/600x800.png", "hint": "street style" },
+      { "url": "https://placehold.co/600x800.png", "hint": "monochrome portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "fashion week" },
+      { "url": "https://placehold.co/600x800.png", "hint": "high fashion" }
+    ]
+  }
+]

@@ -1,4 +1,5 @@
-import { models } from '@/lib/data';
+'use client';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -8,10 +9,26 @@ import { Textarea } from '@/components/ui/textarea';
 import { ImageUploader } from '@/components/image-uploader';
 import Image from 'next/image';
 import { Trash2 } from 'lucide-react';
+import type { Model } from '@/lib/data';
+import { useEffect, useState } from 'react';
 
 export default function ProfilePage() {
-  // We'll use the first model as the "logged in" user for this demo.
-  const user = models[0];
+  const [user, setUser] = useState<Model | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/models.json')
+      .then((res) => res.json())
+      .then((models: Model[]) => {
+        // We'll use the first model as the "logged in" user for this demo.
+        setUser(models[0]);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading || !user) {
+    return <div>Loading profile...</div>;
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">

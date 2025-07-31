@@ -1,6 +1,5 @@
 'use client';
 
-import { models } from '@/lib/data';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -13,10 +12,38 @@ import { BookingForm } from '@/components/booking-form';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Flag, Mail, User, Ruler, BarChart, Footprints, Eye, Scissors } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import type { Model } from '@/lib/data';
+import { useEffect, useState } from 'react';
+
+// This is not ideal for production apps, but for this demo we'll fetch on the client.
+// A better approach would be to use server components and fetch data on the server.
+async function getModels(): Promise<Model[]> {
+  const res = await fetch('/api/models');
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error('Failed to fetch data')
+  }
+  return res.json();
+}
 
 export default function ModelProfilePage({ params }: { params: { id: string } }) {
-  const model = models.find((m) => m.id === params.id);
+  const [model, setModel] = useState<Model | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+
+  useEffect(() => {
+    fetch(`/models.json`)
+      .then((res) => res.json())
+      .then((models: Model[]) => {
+        const foundModel = models.find((m) => m.id === params.id);
+        setModel(foundModel);
+        setLoading(false);
+      });
+  }, [params.id]);
+  
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!model) {
     notFound();
@@ -127,4 +154,13 @@ export default function ModelProfilePage({ params }: { params: { id: string } })
       </div>
     </div>
   );
+}
+
+export async function generateStaticParams() {
+  const res = await fetch(new URL('/models.json', process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:9002').href);
+  const models: Model[] = await res.json();
+ 
+  return models.map((model) => ({
+    id: model.id,
+  }))
 }

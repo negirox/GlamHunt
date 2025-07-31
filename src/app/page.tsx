@@ -1,12 +1,22 @@
 import Link from 'next/link';
-import { models } from '@/lib/data';
 import { ModelCard } from '@/components/model-card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
+import type { Model } from '@/lib/data';
+import fs from 'fs/promises';
+import path from 'path';
 
-export default function Home() {
+async function getModels(): Promise<Model[]> {
+  const filePath = path.join(process.cwd(), 'src', 'lib', 'models.json');
+  const jsonData = await fs.readFile(filePath, 'utf-8');
+  return JSON.parse(jsonData);
+}
+
+export default async function Home() {
+  const models = await getModels();
+
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="text-center mb-12">
@@ -32,6 +42,10 @@ export default function Home() {
                 <SelectItem value="commercial">Commercial</SelectItem>
                 <SelectItem value="fitness">Fitness</SelectItem>
                 <SelectItem value="editorial">Editorial</SelectItem>
+                <SelectItem value="sabyasachi">Sabyasachi</SelectItem>
+                <SelectItem value="myntra">Myntra</SelectItem>
+                <SelectItem value="manish-malhotra">Manish Malhotra</SelectItem>
+                <SelectItem value="raymond">Raymond</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -42,10 +56,10 @@ export default function Home() {
                 <SelectValue placeholder="Any Location" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="new-york">New York</SelectItem>
-                <SelectItem value="los-angeles">Los Angeles</SelectItem>
-                <SelectItem value="paris">Paris</SelectItem>
-                <SelectItem value="milan">Milan</SelectItem>
+                <SelectItem value="mumbai">Mumbai</SelectItem>
+                <SelectItem value="delhi">Delhi</SelectItem>
+                <SelectItem value="bangalore">Bangalore</SelectItem>
+                <SelectItem value="jaipur">Jaipur</SelectItem>
               </SelectContent>
             </Select>
           </div>
