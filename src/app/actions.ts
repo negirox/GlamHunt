@@ -7,7 +7,10 @@ import path from 'path';
 import os from 'os';
 import { ZodError } from 'zod';
 import papaparse from 'papaparse';
+import { Resend } from 'resend';
+import { WelcomeEmail } from '@/emails/welcome-email';
 
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function handleSuggestTags(photoDataUri: string): Promise<SuggestImageTagsOutput> {
   // Basic validation for data URI
@@ -89,6 +92,23 @@ export async function registerModelAction(prevState: any, formData: FormData) {
     });
 
     await fs.appendFile(csvPath, (existingCsv.trim() ? os.EOL : '') + csvString);
+
+    if (process.env.RESEND_API_KEY) {
+      try {
+        await resend.emails.send({
+          from: 'GlamHunt <onboarding@resend.dev>',
+          to: data.email,
+          subject: 'Welcome to GlamHunt! Your Profile is Live!',
+          react: WelcomeEmail({ userFirstname: data.fullName }),
+        });
+      } catch (emailError) {
+         console.error('Email sending failed:', emailError);
+         // Don't block registration if email fails, just log it.
+         // You might want more robust error handling here in a real app.
+      }
+    } else {
+        console.log('RESEND_API_KEY is not set. Skipping email sending.');
+    }
     
     return { status: 'success', message: 'Registration successful! Your data has been saved.' };
 
