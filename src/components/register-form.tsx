@@ -20,6 +20,7 @@ import { CalendarIcon, Check, ChevronsUpDown } from 'lucide-react';
 import { format } from 'date-fns';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './ui/command';
 import { Badge } from './ui/badge';
+import { Switch } from './ui/switch';
 
 const TAGS = [
   { value: 'runway', label: 'Runway' },
@@ -28,6 +29,33 @@ const TAGS = [
   { value: 'glamour', label: 'Glamour' },
   { value: 'editorial', label: 'Editorial' },
   { value: 'promotional', label: 'Promotional' },
+] as const;
+
+const AVAILABLE_FOR_TAGS = [
+    { value: 'fashion', label: 'Fashion' },
+    { value: 'commercial', label: 'Commercial' },
+    { value: 'ecom', label: 'E-commerce' },
+    { value: 'print', label: 'Print' },
+    { value: 'runway', label: 'Runway' },
+    { value: 'parts-modeling', label: 'Parts Modeling' },
+] as const;
+
+const LOCATIONS = [
+    { value: 'mumbai', label: 'Mumbai' },
+    { value: 'delhi', label: 'Delhi' },
+    { value: 'bangalore', label: 'Bangalore' },
+    { value: 'dubai', label: 'Dubai' },
+    { value: 'london', label: 'London' },
+    { value: 'new-york', label: 'New York' },
+] as const;
+
+const LANGUAGES = [
+    { value: 'english', label: 'English' },
+    { value: 'hindi', label: 'Hindi' },
+    { value: 'marathi', label: 'Marathi' },
+    { value: 'punjabi', label: 'Punjabi' },
+    { value: 'spanish', label: 'Spanish' },
+    { value: 'french', label: 'French' },
 ] as const;
 
 const registerSchema = z.object({
@@ -67,6 +95,15 @@ const registerSchema = z.object({
   linkedin: z.string().url().optional().or(z.literal('')),
   website: z.string().url().optional().or(z.literal('')),
 
+  // Booking Preferences
+  availableFor: z.array(z.string()).min(1, 'Please select at least one category.'),
+  travelReady: z.boolean().optional(),
+  preferredLocations: z.array(z.string()).optional(),
+  languagesSpoken: z.array(z.string()).optional(),
+  availability: z.string().optional(),
+  contactEmail: z.string().email('Please enter a valid email for booking inquiries.'),
+  contactPhone: z.string().optional(),
+  bookingLink: z.string().url().optional().or(z.literal('')),
 
   consentBold: z.boolean().default(false),
   consentSemiNude: z.boolean().default(false),
@@ -93,6 +130,8 @@ export function RegisterForm() {
       terms: false,
       tags: [],
       bio: '',
+      availableFor: [],
+      contactEmail: '',
     },
   });
 
@@ -421,6 +460,131 @@ export function RegisterForm() {
                         <FormMessage />
                     </FormItem>
                 )} />
+            </div>
+
+            <div className="space-y-6 rounded-lg border p-4">
+              <h3 className="text-lg font-medium">Booking Preferences</h3>
+               <FormField
+                  control={form.control}
+                  name="availableFor"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Available For</FormLabel>
+                      <MultiSelect
+                        options={AVAILABLE_FOR_TAGS}
+                        selected={field.value}
+                        onChange={field.onChange}
+                        className="w-full"
+                        placeholder="Select categories..."
+                      />
+                       <FormDescription>What kind of work are you looking for?</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                   <FormField
+                      control={form.control}
+                      name="travelReady"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                          <div className="space-y-0.5">
+                            <FormLabel>Willing to Travel?</FormLabel>
+                            <FormDescription>
+                              Are you available for out-of-town gigs?
+                            </FormDescription>
+                          </div>
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="preferredLocations"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Preferred Locations (Optional)</FormLabel>
+                          <MultiSelect
+                            options={LOCATIONS}
+                            selected={field.value || []}
+                            onChange={field.onChange}
+                            className="w-full"
+                            placeholder="Select locations..."
+                          />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                     <FormField
+                      control={form.control}
+                      name="languagesSpoken"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Language(s) Spoken (Optional)</FormLabel>
+                          <MultiSelect
+                            options={LANGUAGES}
+                            selected={field.value || []}
+                            onChange={field.onChange}
+                            className="w-full"
+                            placeholder="Select languages..."
+                          />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                     <FormField
+                      control={form.control}
+                      name="contactEmail"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Contact Email for Bookings</FormLabel>
+                          <FormControl><Input type="email" placeholder="bookings@example.com" {...field} /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                     <FormField
+                      control={form.control}
+                      name="contactPhone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Contact Phone (Optional, Hidden)</FormLabel>
+                          <FormControl><Input type="tel" placeholder="+91..." {...field} /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="bookingLink"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Booking Link (Optional)</FormLabel>
+                          <FormControl><Input type="url" placeholder="https://calendly.com/..." {...field} /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                </div>
+                 <FormField
+                    control={form.control}
+                    name="availability"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Availability Notes (Optional)</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="e.g., Available on weekends, Mon-Wed after 5 PM." {...field} />
+                        </FormControl>
+                        <FormDescription>Let brands know your general availability.</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
             </div>
             
             <div className="space-y-4 rounded-lg border p-4">
