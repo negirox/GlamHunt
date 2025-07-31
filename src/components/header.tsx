@@ -5,15 +5,19 @@ import { Button } from './ui/button';
 import { Camera, Menu, X, UserPlus } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import { usePathname } from 'next/navigation';
 
 const navLinks = [
-  { href: '/', label: 'Discover' },
+  { href: '/', label: 'Home' },
+  { href: '/discover', label: 'Discover' },
+  { href: '/about', label: 'About' },
   { href: '/profile', label: 'Profile' },
   { href: '/contact', label: 'Contact' },
 ];
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -25,7 +29,14 @@ export default function Header() {
 
         <nav className="hidden md:flex items-center gap-6">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="text-sm font-medium text-foreground/80 transition-colors hover:text-primary">
+            <Link 
+              key={link.href} 
+              href={link.href} 
+              className={cn(
+                "text-sm font-medium transition-colors hover:text-primary",
+                pathname === link.href ? "text-primary" : "text-foreground/80"
+              )}
+            >
               {link.label}
             </Link>
           ))}
