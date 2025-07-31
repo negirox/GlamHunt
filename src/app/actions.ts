@@ -10,8 +10,6 @@ import papaparse from 'papaparse';
 import { Resend } from 'resend';
 import { WelcomeEmail } from '@/emails/welcome-email';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function handleSuggestTags(photoDataUri: string): Promise<SuggestImageTagsOutput> {
   // Basic validation for data URI
   if (!photoDataUri.startsWith('data:image/')) {
@@ -95,6 +93,7 @@ export async function registerModelAction(prevState: any, formData: FormData) {
 
     if (process.env.RESEND_API_KEY) {
       try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
           from: 'GlamHunt <onboarding@resend.dev>',
           to: data.email,
