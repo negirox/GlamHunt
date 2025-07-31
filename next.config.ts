@@ -35,9 +35,14 @@ const nextConfig: NextConfig = {
       const staticPath = path.join(process.cwd(), '.next/static/models.json');
       
       // Ensure the static directory exists
-      fs.mkdirSync(path.dirname(staticPath), { recursive: true });
-      // Copy the file
-      fs.copyFileSync(modelsPath, staticPath);
+      if (!fs.existsSync(path.dirname(staticPath))) {
+        fs.mkdirSync(path.dirname(staticPath), { recursive: true });
+      }
+
+      // Copy the file only if it doesn't exist or is different
+      if (!fs.existsSync(staticPath) || fs.readFileSync(modelsPath).toString() !== fs.readFileSync(staticPath).toString()) {
+         fs.copyFileSync(modelsPath, staticPath);
+      }
     }
     return config;
   },

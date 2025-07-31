@@ -21,6 +21,9 @@ import { format } from 'date-fns';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from './ui/command';
 import { Badge } from './ui/badge';
 import { Switch } from './ui/switch';
+import { registerModelAction } from '@/app/actions';
+import { useFormState } from 'react-dom';
+
 
 const TAGS = [
   { value: 'runway', label: 'Runway' },
@@ -83,8 +86,8 @@ const registerSchema = z.object({
   shoeSize: z.string().optional(),
 
   // Portfolio Section
-  profilePicture: z.any().refine((files) => files?.length == 1, 'Profile picture is required.'),
-  portfolioGallery: z.any().refine((files) => files?.length >= 5 && files?.length <= 20, 'Upload between 5 and 20 photos.'),
+  profilePicture: z.any().refine((files) => files?.length >= 1, 'Profile picture is required.').optional(),
+  portfolioGallery: z.any().refine((files) => files?.length >= 5 && files?.length <= 20, 'Upload between 5 and 20 photos.').optional(),
   portfolioVideo: z.any().optional(),
   tags: z.array(z.string()).min(1, 'Please select at least one tag.'),
   experienceLevel: z.enum(['beginner', 'intermediate', 'pro']).optional(),
@@ -116,8 +119,16 @@ const registerSchema = z.object({
   path: ['confirmPassword'],
 });
 
+const initialState = {
+  status: 'idle',
+  message: '',
+};
+
 export function RegisterForm() {
   const { toast } = useToast();
+  const [state, formAction] = useFormState(registerModelAction, initialState);
+  const formRef = React.useRef<HTMLFormElement>(null);
+
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -135,14 +146,23 @@ export function RegisterForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof registerSchema>) {
-    console.log(values);
-    toast({
-      title: 'Registration Successful!',
-      description: "Thank you for registering. You can now build your portfolio.",
-    });
-    form.reset();
-  }
+  React.useEffect(() => {
+    if (state.status === 'success') {
+      toast({
+        title: 'Registration Successful!',
+        description: state.message,
+      });
+      form.reset();
+      formRef.current?.reset();
+    } else if (state.status === 'error') {
+      toast({
+        variant: 'destructive',
+        title: 'Registration Failed',
+        description: state.message,
+      });
+    }
+  }, [state, toast, form]);
+
 
   return (
     <Card className="w-full max-w-4xl">
@@ -152,7 +172,7 @@ export function RegisterForm() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form ref={formRef} action={formAction} className="space-y-8">
             <div className="space-y-4 rounded-lg border p-4">
               <h3 className="text-lg font-medium">Account Details</h3>
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -370,7 +390,7 @@ export function RegisterForm() {
                       <FormItem>
                         <FormLabel>Profile Picture</FormLabel>
                         <FormControl>
-                          <Input type="file" accept="image/*" {...form.register('profilePicture')} />
+                          <Input type="file" accept="image/*" {...form.register("profilePicture")} />
                         </FormControl>
                         <FormDescription>This will be your main photo on the site.</FormDescription>
                         <FormMessage />
@@ -384,7 +404,7 @@ export function RegisterForm() {
                       <FormItem>
                         <FormLabel>Portfolio Gallery</FormLabel>
                         <FormControl>
-                          <Input type="file" accept="image/*" multiple {...form.register('portfolioGallery')} />
+                          <Input type="file" accept="image/*" multiple {...form.register("portfolioGallery")} />
                         </FormControl>
                         <FormDescription>Upload between 5 and 20 of your best photos.</FormDescription>
                         <FormMessage />
@@ -398,7 +418,7 @@ export function RegisterForm() {
                       <FormItem>
                         <FormLabel>Portfolio Video (optional)</FormLabel>
                         <FormControl>
-                          <Input type="file" accept="video/*" {...form.register('portfolioVideo')} />
+                          <Input type="file" accept="video/*" {...form.register("portfolioVideo")} />
                         </FormControl>
                         <FormDescription>Upload an intro or runway show reel.</FormDescription>
                         <FormMessage />
@@ -429,7 +449,7 @@ export function RegisterForm() {
                         <MultiSelect
                           options={TAGS}
                           selected={field.value}
-                          onChange={field.onChange}
+                          onChange={(value) => field.onChange(value)}
                           className="w-full"
                           placeholder="Select tags..."
                         />
@@ -473,7 +493,7 @@ export function RegisterForm() {
                       <MultiSelect
                         options={AVAILABLE_FOR_TAGS}
                         selected={field.value}
-                        onChange={field.onChange}
+                        onChange={(value) => field.onChange(value)}
                         className="w-full"
                         placeholder="Select categories..."
                       />
@@ -498,6 +518,7 @@ export function RegisterForm() {
                             <Switch
                               checked={field.value}
                               onCheckedChange={field.onChange}
+                              name={field.name}
                             />
                           </FormControl>
                         </FormItem>
@@ -512,7 +533,7 @@ export function RegisterForm() {
                           <MultiSelect
                             options={LOCATIONS}
                             selected={field.value || []}
-                            onChange={field.onChange}
+                            onChange={(value) => field.onChange(value)}
                             className="w-full"
                             placeholder="Select locations..."
                           />
@@ -529,7 +550,7 @@ export function RegisterForm() {
                           <MultiSelect
                             options={LANGUAGES}
                             selected={field.value || []}
-                            onChange={field.onChange}
+                            onChange={(value) => field.onChange(value)}
                             className="w-full"
                             placeholder="Select languages..."
                           />
@@ -598,7 +619,7 @@ export function RegisterForm() {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                     <FormControl>
-                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} name={field.name} />
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel>
@@ -617,7 +638,7 @@ export function RegisterForm() {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                     <FormControl>
-                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} name={field.name} />
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel>
@@ -636,7 +657,7 @@ export function RegisterForm() {
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                     <FormControl>
-                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} name={field.name} />
                     </FormControl>
                     <div className="space-y-1 leading-none">
                       <FormLabel>
@@ -660,6 +681,7 @@ export function RegisterForm() {
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
+                      name={field.name}
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
@@ -693,14 +715,17 @@ function MultiSelect({ options, selected, onChange, className, placeholder }: Mu
   const [open, setOpen] = React.useState(false);
 
   const handleSelect = (value: string) => {
-    if (selected.includes(value)) {
-      onChange(selected.filter((item) => item !== value));
-    } else {
-      onChange([...selected, value]);
-    }
+    const newSelected = selected.includes(value)
+      ? selected.filter((item) => item !== value)
+      : [...selected, value];
+    onChange(newSelected);
   };
+  
+  const name = "tags";
 
   return (
+    <>
+    <input type="hidden" name={name} value={selected.join(',')} />
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
@@ -757,5 +782,6 @@ function MultiSelect({ options, selected, onChange, className, placeholder }: Mu
         </Command>
       </PopoverContent>
     </Popover>
+    </>
   );
 }
