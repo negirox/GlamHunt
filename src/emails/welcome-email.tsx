@@ -106,4 +106,10 @@ const button = {
 
 const hr = {
   borderColor: '#cccccc',
-  margin: '2
+  margin: '20px 0',
+};
+
+const footer = {
+  color: '#8898aa',
+  fontSize: '12px',
+};
