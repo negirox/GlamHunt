@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import papaparse from 'papaparse';
+import { revalidatePath } from 'next/cache';
 
 const SESSION_COOKIE_NAME = 'admin_session';
 const credentialsPath = path.join(process.cwd(), 'admin-credentials.json');
@@ -63,7 +64,13 @@ export async function getRegistrations() {
   try {
     const csvFile = await fs.readFile(registrationsPath, 'utf-8');
     const parsed = papaparse.parse(csvFile, { header: true, skipEmptyLines: true });
-    return parsed.data;
+    // Convert boolean-like strings to actual booleans
+    const data = parsed.data.map((row: any) => ({
+      ...row,
+      verified: row.verified === 'true' || row.verified === true,
+      featured: row.featured === 'true' || row.featured === true,
+    }));
+    return data;
   } catch (error) {
     // If file doesn't exist, return empty array
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
@@ -74,14 +81,34 @@ export async function getRegistrations() {
   }
 }
 
-export async function updateRegistrationStatus(email: string, status: 'approved' | 'rejected') {
+const updateSchema = z.object({
+    email: z.string().email(),
+    status: z.enum(['active', 'inactive', 'blocked', 'pending']),
+    verified: z.boolean(),
+    featured: z.boolean(),
+});
+
+export async function updateRegistration(formData: FormData) {
   try {
+    const validatedFields = updateSchema.safeParse({
+      email: formData.get('email'),
+      status: formData.get('status'),
+      verified: formData.get('verified') === 'true',
+      featured: formData.get('featured') === 'true',
+    });
+
+    if (!validatedFields.success) {
+        return { status: 'error', message: 'Invalid data provided.', errors: validatedFields.error.flatten().fieldErrors };
+    }
+
+    const { email, status, verified, featured } = validatedFields.data;
+
     const registrations = await getRegistrations();
     let found = false;
     const updatedRegistrations = registrations.map((reg: any) => {
       if (reg.email === email) {
         found = true;
-        return { ...reg, status };
+        return { ...reg, status, verified, featured };
       }
       return reg;
     });
@@ -93,10 +120,46 @@ export async function updateRegistrationStatus(email: string, status: 'approved'
     const csvString = papaparse.unparse(updatedRegistrations, { header: true });
     await fs.writeFile(registrationsPath, csvString);
 
-    return { status: 'success', message: `Registration has been ${status}.` };
+    revalidatePath('/admin/dashboard');
+    revalidatePath('/profile');
+
+    return { status: 'success', message: `Registration has been updated.` };
 
   } catch (error) {
     console.error('Failed to update status:', error);
     return { status: 'error', message: 'Failed to update registration status.' };
   }
+}
+
+export async function updateRegistrationStatus(email: string, status: 'approved' | 'rejected') {
+    const newStatus = status === 'approved' ? 'active' : 'blocked';
+    
+    try {
+        const registrations = await getRegistrations();
+        let found = false;
+        const updatedRegistrations = registrations.map((reg: any) => {
+        if (reg.email === email) {
+            found = true;
+            // When using the old approve/reject, set verified/featured to false by default.
+            return { ...reg, status: newStatus, verified: reg.verified || false, featured: reg.featured || false };
+        }
+        return reg;
+        });
+
+        if (!found) {
+            return { status: 'error', message: 'Registration not found.' };
+        }
+
+        const csvString = papaparse.unparse(updatedRegistrations, { header: true });
+        await fs.writeFile(registrationsPath, csvString);
+        
+        revalidatePath('/admin/dashboard');
+        revalidatePath('/profile');
+
+        return { status: 'success', message: `Registration has been ${status}.` };
+
+    } catch (error) {
+        console.error('Failed to update status:', error);
+        return { status: 'error', message: 'Failed to update registration status.' };
+    }
 }

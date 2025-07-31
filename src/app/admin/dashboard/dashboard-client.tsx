@@ -11,41 +11,38 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { updateRegistrationStatus } from '@/app/admin/actions';
 import { useToast } from '@/hooks/use-toast';
-import { CheckCircle2, XCircle, Clock } from 'lucide-react';
+import { CheckCircle2, XCircle, Clock, ShieldCheck, Star, Edit, Ban } from 'lucide-react';
+import { ManageRegistrationDialog } from '@/components/manage-registration-dialog';
 
 export function DashboardClient({ initialData }: { initialData: any[] }) {
   const [data, setData] = React.useState(initialData);
+  const [selectedReg, setSelectedReg] = React.useState<any | null>(null);
+
+  React.useEffect(() => {
+    setData(initialData);
+  }, [initialData]);
+
   const { toast } = useToast();
 
-  const handleStatusUpdate = async (email: string, status: 'approved' | 'rejected') => {
-    const result = await updateRegistrationStatus(email, status);
-    if (result.status === 'success') {
-      setData((prevData) =>
+  const handleUpdate = (updatedReg: any) => {
+     setData((prevData) =>
         prevData.map((item) =>
-          item.email === email ? { ...item, status } : item
+          item.email === updatedReg.email ? { ...item, ...updatedReg } : item
         )
       );
-      toast({
-        title: 'Status Updated',
-        description: result.message,
-      });
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Update Failed',
-        description: result.message,
-      });
-    }
   };
   
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status?: string) => {
     switch (status) {
+      case 'active':
       case 'approved':
-        return <Badge variant="secondary" className="bg-green-600/20 text-green-400 border-green-500/50"><CheckCircle2 className="mr-1" /> Approved</Badge>;
+        return <Badge variant="secondary" className="bg-green-600/20 text-green-400 border-green-500/50"><CheckCircle2 className="mr-1" /> Active</Badge>;
       case 'rejected':
-        return <Badge variant="destructive"><XCircle className="mr-1" /> Rejected</Badge>;
+      case 'blocked':
+        return <Badge variant="destructive"><Ban className="mr-1" /> Blocked</Badge>;
+       case 'inactive':
+        return <Badge variant="secondary"><XCircle className="mr-1" /> Inactive</Badge>;
       default:
         return <Badge variant="outline"><Clock className="mr-1" /> Pending</Badge>;
     }
@@ -56,50 +53,60 @@ export function DashboardClient({ initialData }: { initialData: any[] }) {
   }
 
   return (
+    <>
     <div className="w-full overflow-auto">
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Full Name</TableHead>
-            <TableHead>Email</TableHead>
             <TableHead>Role</TableHead>
-            <TableHead>Applied On</TableHead>
             <TableHead>Status</TableHead>
+            <TableHead>Verified</TableHead>
+            <TableHead>Featured</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data.map((item) => (
             <TableRow key={item.email}>
-              <TableCell className="font-medium">{item.fullName}</TableCell>
-              <TableCell>{item.email}</TableCell>
+              <TableCell className="font-medium">
+                <div>{item.fullName}</div>
+                <div className="text-xs text-muted-foreground">{item.email}</div>
+              </TableCell>
               <TableCell className="capitalize">{item.role}</TableCell>
-              <TableCell>{item.dob ? new Date(item.dob).toLocaleDateString() : 'N/A'}</TableCell>
               <TableCell>{getStatusBadge(item.status)}</TableCell>
+              <TableCell>
+                 {item.verified ? (
+                    <ShieldCheck className="h-5 w-5 text-green-400" /> 
+                 ) : (
+                    <ShieldCheck className="h-5 w-5 text-muted-foreground/50" />
+                 )}
+              </TableCell>
+              <TableCell>
+                {item.featured ? (
+                    <Star className="h-5 w-5 text-yellow-400" />
+                ) : (
+                    <Star className="h-5 w-5 text-muted-foreground/50" />
+                )}
+              </TableCell>
               <TableCell className="text-right">
-                <div className="flex gap-2 justify-end">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleStatusUpdate(item.email, 'approved')}
-                        disabled={item.status === 'approved'}
-                    >
-                        Approve
-                    </Button>
-                    <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleStatusUpdate(item.email, 'rejected')}
-                        disabled={item.status === 'rejected'}
-                    >
-                        Reject
-                    </Button>
-                </div>
+                <Button variant="outline" size="sm" onClick={() => setSelectedReg(item)}>
+                  <Edit className="mr-2 h-4 w-4" /> Manage
+                </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </div>
+     {selectedReg && (
+        <ManageRegistrationDialog
+          isOpen={!!selectedReg}
+          onClose={() => setSelectedReg(null)}
+          registration={selectedReg}
+          onUpdate={handleUpdate}
+        />
+      )}
+    </>
   );
 }

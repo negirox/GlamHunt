@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { ImageUploader } from '@/components/image-uploader';
 import Image from 'next/image';
-import { Trash2, CheckCircle2, XCircle, Clock } from 'lucide-react';
+import { Trash2, CheckCircle2, XCircle, Clock, Ban } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useEffect, useState } from 'react';
 import { Separator } from '@/components/ui/separator';
@@ -42,10 +42,14 @@ export default function ProfilePage() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
+      case 'active':
       case 'approved':
-        return <Badge variant="secondary" className="bg-green-600/20 text-green-400 border-green-500/50 text-lg"><CheckCircle2 className="mr-2" /> Approved</Badge>;
+        return <Badge variant="secondary" className="bg-green-600/20 text-green-400 border-green-500/50 text-lg"><CheckCircle2 className="mr-2" /> Approved & Active</Badge>;
+      case 'inactive':
+        return <Badge variant="outline" className="text-lg"><XCircle className="mr-2" /> Inactive</Badge>;
+      case 'blocked':
       case 'rejected':
-        return <Badge variant="destructive" className="text-lg"><XCircle className="mr-2" /> Rejected</Badge>;
+        return <Badge variant="destructive" className="text-lg"><Ban className="mr-2" /> Blocked</Badge>;
       default:
         return <Badge variant="outline" className="text-lg"><Clock className="mr-2" /> Pending Review</Badge>;
     }
