@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from './ui/button';
-import { Camera, Menu, X } from 'lucide-react';
+import { Camera, Menu, X, UserPlus } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -32,11 +32,8 @@ export default function Header() {
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
-          <Button variant="ghost" asChild>
-            <Link href="/auth/login">Log In</Link>
-          </Button>
           <Button asChild>
-            <Link href="/auth/signup">Sign Up</Link>
+            <Link href="/auth/register"><UserPlus className="mr-2" /> Register as Model</Link>
           </Button>
         </div>
 
@@ -60,11 +57,8 @@ export default function Header() {
                   ))}
                 </nav>
                 <div className="flex flex-col gap-2">
-                   <Button variant="outline" asChild>
-                      <Link href="/auth/login" onClick={() => setIsMenuOpen(false)}>Log In</Link>
-                   </Button>
                    <Button asChild>
-                     <Link href="/auth/signup" onClick={() => setIsMenuOpen(false)}>Sign Up</Link>
+                     <Link href="/auth/register" onClick={() => setIsMenuOpen(false)}><UserPlus className="mr-2" /> Register as Model</Link>
                    </Button>
                 </div>
             </div>

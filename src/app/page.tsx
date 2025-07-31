@@ -24,7 +24,7 @@ export default async function Home() {
         <p className="text-lg md:text-xl text-foreground/80 mt-4">Find Your Next Star. Discover and book top talent.</p>
       </header>
       
-      <div className="bg-card/50 p-4 sm:p-6 rounded-lg shadow-lg mb-8 sticky top-20 z-10 backdrop-blur-sm">
+      <div className="bg-card/50 p-4 sm:p-6 rounded-lg shadow-lg mb-8 sticky top-16 z-10 backdrop-blur-sm">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
           <div className="relative">
              <label htmlFor="search" className="block text-sm font-medium text-foreground/80 mb-1">Search Models</label>
