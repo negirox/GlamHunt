@@ -11,6 +11,7 @@ import { revalidatePath } from 'next/cache';
 const SESSION_COOKIE_NAME = 'admin_session';
 const credentialsPath = path.join(process.cwd(), 'admin-credentials.json');
 const registrationsPath = path.join(process.cwd(), 'registrations.csv');
+const submissionsPath = path.join(process.cwd(), 'contact-submissions.csv');
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Username is required'),
@@ -77,6 +78,20 @@ export async function getRegistrations() {
       return [];
     }
     console.error('Failed to read registrations:', error);
+    return [];
+  }
+}
+
+export async function getContactSubmissions() {
+  try {
+    const csvFile = await fs.readFile(submissionsPath, 'utf-8');
+    const parsed = papaparse.parse(csvFile, { header: true, skipEmptyLines: true });
+    return parsed.data;
+  } catch (error) {
+     if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+      return [];
+    }
+    console.error('Failed to read submissions:', error);
     return [];
   }
 }
@@ -155,6 +170,7 @@ export async function updateRegistrationStatus(email: string, status: 'approved'
         
         revalidatePath('/admin/dashboard');
         revalidatePath('/profile');
+        revalidatePath('/admin/inquiries');
 
         return { status: 'success', message: `Registration has been ${status}.` };
 

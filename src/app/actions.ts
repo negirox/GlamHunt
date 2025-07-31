@@ -5,10 +5,11 @@ import type { SuggestImageTagsOutput } from '@/ai/flows/suggest-image-tags';
 import fs from 'fs/promises';
 import path from 'path';
 import os from 'os';
-import { ZodError } from 'zod';
+import { z, ZodError } from 'zod';
 import papaparse from 'papaparse';
 import { Resend } from 'resend';
 import { WelcomeEmail } from '@/emails/welcome-email';
+import { AdminReplyEmail } from '@/emails/admin-reply-email';
 
 export async function handleSuggestTags(photoDataUri: string): Promise<SuggestImageTagsOutput> {
   // Basic validation for data URI
@@ -27,6 +28,103 @@ export async function handleSuggestTags(photoDataUri: string): Promise<SuggestIm
   }
 }
 
+const contactFormSchema = z.object({
+  name: z.string().min(2, 'Name is required'),
+  email: z.string().email(),
+  subject: z.string().min(5, 'Subject is required'),
+  message: z.string().min(10, 'Message must be at least 10 characters.'),
+});
+
+export async function handleContactForm(prevState: any, formData: FormData) {
+  try {
+    const validatedFields = contactFormSchema.safeParse(Object.fromEntries(formData.entries()));
+    if (!validatedFields.success) {
+      return { status: 'error', message: 'Invalid form data.', errors: validatedFields.error.flatten().fieldErrors };
+    }
+
+    const submissionsPath = path.join(process.cwd(), 'contact-submissions.csv');
+    const submissionData = {
+      ...validatedFields.data,
+      submittedAt: new Date().toISOString(),
+      status: 'new', // new, replied
+    };
+
+    const csvData = [submissionData];
+    let existingCsv = '';
+    try {
+        await fs.access(submissionsPath);
+        existingCsv = await fs.readFile(submissionsPath, 'utf-8');
+    } catch (e) {
+        // File doesn't exist, will be created
+    }
+
+    const csvString = papaparse.unparse(csvData, {
+        header: !existingCsv.trim(),
+    });
+
+    await fs.appendFile(submissionsPath, (existingCsv.trim() ? os.EOL : '') + csvString);
+    
+    return { status: 'success', message: 'Your message has been sent successfully!' };
+  } catch (error) {
+    console.error('Contact form submission failed:', error);
+    return { status: 'error', message: 'An unexpected error occurred.' };
+  }
+}
+
+const replyFormSchema = z.object({
+  to: z.string().email(),
+  subject: z.string(),
+  message: z.string(),
+  original_email: z.string().email(),
+});
+
+export async function handleReplyForm(prevState: any, formData: FormData) {
+   if (!process.env.RESEND_API_KEY) {
+    console.error('Resend API key is not configured.');
+    return { status: 'error', message: 'Email service is not configured.' };
+  }
+  
+  try {
+    const validatedFields = replyFormSchema.safeParse(Object.fromEntries(formData.entries()));
+    if (!validatedFields.success) {
+        return { status: 'error', message: 'Invalid reply data.', errors: validatedFields.error.flatten().fieldErrors };
+    }
+    const { to, subject, message, original_email } = validatedFields.data;
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+        from: 'GlamHunt Admin <onboarding@resend.dev>',
+        to: to,
+        subject: `Re: ${subject}`,
+        react: AdminReplyEmail({ replyMessage: message, originalSubject: subject }),
+    });
+
+    // Update the status in the CSV
+    const submissionsPath = path.join(process.cwd(), 'contact-submissions.csv');
+    const csvFile = await fs.readFile(submissionsPath, 'utf-8');
+    const parsed = papaparse.parse(csvFile, { header: true, skipEmptyLines: true });
+    
+    let found = false;
+    const updatedSubmissions = (parsed.data as any[]).map(row => {
+        if (row.email === original_email && row.subject === subject) {
+            found = true;
+            return { ...row, status: 'replied' };
+        }
+        return row;
+    });
+
+    if(found) {
+        const csvString = papaparse.unparse(updatedSubmissions, { header: true });
+        await fs.writeFile(submissionsPath, csvString);
+    }
+    
+    return { status: 'success', message: 'Your reply has been sent.' };
+
+  } catch (error) {
+    console.error('Failed to send reply:', error);
+    return { status: 'error', message: 'An unexpected error occurred while sending the reply.' };
+  }
+}
 
 export async function registerModelAction(prevState: any, formData: FormData) {
   try {

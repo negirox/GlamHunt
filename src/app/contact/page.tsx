@@ -1,5 +1,7 @@
 'use client';
 
+import { useFormState } from 'react-dom';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -9,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { handleContactForm } from '../actions';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, 'Name is required'),
@@ -19,21 +22,38 @@ const contactFormSchema = z.object({
 
 type ContactFormValues = z.infer<typeof contactFormSchema>;
 
+const initialState = {
+  status: 'idle',
+  message: '',
+};
+
 export default function ContactPage() {
   const { toast } = useToast();
+  const [state, formAction] = useFormState(handleContactForm, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
+
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: { name: '', email: '', subject: '', message: '' },
   });
 
-  function onSubmit(data: ContactFormValues) {
-    console.log(data);
-    toast({
-      title: 'Message Sent!',
-      description: 'Thank you for contacting us. We will get back to you shortly.',
-    });
-    form.reset();
-  }
+  useEffect(() => {
+    if (state.status === 'success') {
+      toast({
+        title: 'Message Sent!',
+        description: state.message,
+      });
+      form.reset();
+      formRef.current?.reset();
+    } else if (state.status === 'error') {
+       toast({
+        variant: 'destructive',
+        title: 'Submission Failed',
+        description: state.message,
+      });
+    }
+  }, [state, toast, form]);
+
 
   return (
     <div className="container mx-auto max-w-2xl px-4 py-12">
@@ -44,7 +64,7 @@ export default function ContactPage() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form ref={formRef} action={formAction} className="space-y-6">
               <FormField
                 control={form.control}
                 name="name"
