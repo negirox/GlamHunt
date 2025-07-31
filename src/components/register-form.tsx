@@ -294,7 +294,7 @@ export function RegisterForm() {
                   <FormField control={form.control} name="weight" render={({ field }) => (<FormItem><FormLabel>Weight (Optional)</FormLabel><FormControl><Input placeholder="e.g. 55 kg" {...field} /></FormControl><FormMessage /></FormItem>)} />
                   <FormField control={form.control} name="chestBust" render={({ field }) => (<FormItem><FormLabel>Chest/Bust (Optional)</FormLabel><FormControl><Input placeholder="e.g. 34 inches" {...field} /></FormControl><FormMessage /></FormItem>)} />
                   <FormField control={form.control} name="waist" render={({ field }) => (<FormItem><FormLabel>Waist (Optional)</FormLabel><FormControl><Input placeholder="e.g. 28 inches" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                  <FormField control={form.control} name="hips" render={({ field }) => (<FormItem><FormLabel>Hips (Optional)</FormLabel><FormControl><Input placeholder="e.g. 36 inches" {...field} /></FormControl><FormMessage /></FormMessage /></FormItem>)} />
+                  <FormField control={form.control} name="hips" render={({ field }) => (<FormItem><FormLabel>Hips (Optional)</FormLabel><FormControl><Input placeholder="e.g. 36 inches" {...field} /></FormControl><FormMessage /></FormItem>)} />
                   <FormField control={form.control} name="hairColor" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Hair Color (Optional)</FormLabel>
