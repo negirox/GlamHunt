@@ -95,10 +95,6 @@ export function RegisterForm() {
       bio: '',
     },
   });
-  
-  const portfolioGalleryRef = form.register("portfolioGallery");
-  const profilePictureRef = form.register("profilePicture");
-  const portfolioVideoRef = form.register("portfolioVideo");
 
   function onSubmit(values: z.infer<typeof registerSchema>) {
     console.log(values);
@@ -328,30 +324,48 @@ export function RegisterForm() {
             <div className="space-y-6 rounded-lg border p-4">
                 <h3 className="text-lg font-medium">Portfolio</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField control={form.control} name="profilePicture" render={({ field }) => (
+                  <FormField
+                    control={form.control}
+                    name="profilePicture"
+                    render={({ field }) => (
                       <FormItem>
-                          <FormLabel>Profile Picture</FormLabel>
-                          <FormControl><Input type="file" accept="image/*" {...profilePictureRef} /></FormControl>
-                          <FormDescription>This will be your main photo on the site.</FormDescription>
-                          <FormMessage />
+                        <FormLabel>Profile Picture</FormLabel>
+                        <FormControl>
+                          <Input type="file" accept="image/*" {...form.register('profilePicture')} />
+                        </FormControl>
+                        <FormDescription>This will be your main photo on the site.</FormDescription>
+                        <FormMessage />
                       </FormItem>
-                  )} />
-                  <FormField control={form.control} name="portfolioGallery" render={({ field }) => (
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="portfolioGallery"
+                    render={({ field }) => (
                       <FormItem>
-                          <FormLabel>Portfolio Gallery</FormLabel>
-                          <FormControl><Input type="file" accept="image/*" multiple {...portfolioGalleryRef} /></FormControl>
-                          <FormDescription>Upload between 5 and 20 of your best photos.</FormDescription>
-                          <FormMessage />
+                        <FormLabel>Portfolio Gallery</FormLabel>
+                        <FormControl>
+                          <Input type="file" accept="image/*" multiple {...form.register('portfolioGallery')} />
+                        </FormControl>
+                        <FormDescription>Upload between 5 and 20 of your best photos.</FormDescription>
+                        <FormMessage />
                       </FormItem>
-                  )} />
-                   <FormField control={form.control} name="portfolioVideo" render={({ field }) => (
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="portfolioVideo"
+                    render={({ field }) => (
                       <FormItem>
-                          <FormLabel>Portfolio Video (optional)</FormLabel>
-                          <FormControl><Input type="file" accept="video/*" {...portfolioVideoRef} /></FormControl>
-                          <FormDescription>Upload an intro or runway show reel.</FormDescription>
-                          <FormMessage />
+                        <FormLabel>Portfolio Video (optional)</FormLabel>
+                        <FormControl>
+                          <Input type="file" accept="video/*" {...form.register('portfolioVideo')} />
+                        </FormControl>
+                        <FormDescription>Upload an intro or runway show reel.</FormDescription>
+                        <FormMessage />
                       </FormItem>
-                  )} />
+                    )}
+                  />
                   <FormField control={form.control} name="experienceLevel" render={({ field }) => (
                     <FormItem>
                       <FormLabel>Experience Level (Optional)</FormLabel>
