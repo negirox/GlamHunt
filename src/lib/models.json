@@ -99,5 +99,105 @@
       { "url": "https://placehold.co/800x600.png", "hint": "fashion week" },
       { "url": "https://placehold.co/600x800.png", "hint": "high fashion" }
     ]
+  },
+  {
+    "id": "5",
+    "name": "Aisha Khan",
+    "location": "Hyderabad, India",
+    "specialties": ["Commercial", "Bridal", "E-commerce"],
+    "bio": "Aisha's warm smile and expressive eyes make her perfect for commercial and bridal campaigns. She has a natural talent for connecting with the camera.",
+    "stats": {
+      "height": "5'7\"",
+      "bust": 34,
+      "waist": 26,
+      "hips": 37,
+      "shoe": 7,
+      "eyes": "Hazel",
+      "hair": "Dark Brown"
+    },
+    "profileImage": "https://placehold.co/400x600.png",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "bridal jewelry" },
+      { "url": "https://placehold.co/800x600.png", "hint": "e-commerce fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "lifestyle ad" },
+      { "url": "https://placehold.co/600x800.png", "hint": "happy portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "saree elegance" },
+      { "url": "https://placehold.co/600x800.png", "hint": "product shoot" }
+    ]
+  },
+  {
+    "id": "6",
+    "name": "Karan Kapoor",
+    "location": "Kolkata, India",
+    "specialties": ["Editorial", "Avant-Garde", "Independent Designers"],
+    "bio": "Karan is known for his androgynous look and his ability to push creative boundaries. He is a favorite among independent designers for his unique and bold style.",
+    "stats": {
+      "height": "6'2\"",
+      "bust": 38,
+      "waist": 30,
+      "hips": 36,
+      "shoe": 11,
+      "eyes": "Brown",
+      "hair": "Black"
+    },
+    "profileImage": "https://placehold.co/400x600.png",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "avant-garde fashion" },
+      { "url": "https://placehold.co/800x600.png", "hint": "black and white" },
+      { "url": "https://placehold.co/600x800.png", "hint": "gender fluid fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "dramatic pose" },
+      { "url": "https://placehold.co/800x600.png", "hint": "artistic portrait" },
+      { "url": "https://placehold.co/600x800.png", "hint": "conceptual fashion" }
+    ]
+  },
+  {
+    "id": "7",
+    "name": "Sameera Reddy",
+    "location": "Chennai, India",
+    "specialties": ["Swimwear", "Fitness", "Commercial"],
+    "bio": "Sameera is a fitness enthusiast with a strong and confident presence. Her dedication to a healthy lifestyle shines through in her dynamic swimwear and fitness shoots.",
+    "stats": {
+      "height": "5'10\"",
+      "bust": 34,
+      "waist": 25,
+      "hips": 36,
+      "shoe": 8.5,
+      "eyes": "Dark Brown",
+      "hair": "Black"
+    },
+    "profileImage": "https://placehold.co/400x600.png",
+    "images": [
+      { "url": "https://placehold.co/800x600.png", "hint": "beach swimwear" },
+      { "url": "https://placehold.co/600x800.png", "hint": "yoga pose" },
+      { "url": "https://placehold.co/800x600.png", "hint": "athletic wear" },
+      { "url": "https://placehold.co/600x800.png", "hint": "poolside fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "action shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "health lifestyle" }
+    ]
+  },
+  {
+    "id": "8",
+    "name": "Arjun Desai",
+    "location": "Pune, India",
+    "specialties": ["Commercial", "Lifestyle", "Print"],
+    "bio": "Arjun has a classic, approachable look that makes him highly sought after for print and lifestyle advertising. He is professional and easy to work with.",
+    "stats": {
+      "height": "5'11\"",
+      "bust": 39,
+      "waist": 32,
+      "hips": 38,
+      "shoe": 9.5,
+      "eyes": "Brown",
+      "hair": "Brown"
+    },
+    "profileImage": "https://placehold.co/400x600.png",
+    "images": [
+      { "url": "https://placehold.co/800x600.png", "hint": "mens casual" },
+      { "url": "https://placehold.co/600x800.png", "hint": "urban exploration" },
+      { "url": "https://placehold.co/800x600.png", "hint": "family lifestyle" },
+      { "url": "https://placehold.co/600x800.png", "hint": "professional headshot" },
+      { "url": "https://placehold.co/600x800.png", "hint": "winter fashion" },
+      { "url": "https://placehold.co/800x600.png", "hint": "cafe lifestyle" }
+    ]
   }
 ]
