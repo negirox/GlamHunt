@@ -21,8 +21,8 @@ export default function DiscoverPage() {
 
   useEffect(() => {
     async function fetchModels() {
+      setLoading(true);
       try {
-        setLoading(true);
         const res = await fetch('/models.json');
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
@@ -31,6 +31,7 @@ export default function DiscoverPage() {
         setAllModels(data);
       } catch (error) {
         console.error('Failed to fetch models:', error);
+        setAllModels([]); // Ensure it's an empty array on error
       } finally {
         setLoading(false);
       }
@@ -39,7 +40,7 @@ export default function DiscoverPage() {
   }, []);
   
   const filteredModels = useMemo(() => {
-    if (loading) return [];
+    if (loading || !allModels.length) return [];
 
     let tempModels = [...allModels];
 
@@ -66,16 +67,21 @@ export default function DiscoverPage() {
   }, [searchTerm, specialty]);
 
   const paginatedModels = useMemo(() => {
+    if (!filteredModels.length) return [];
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
     return filteredModels.slice(startIndex, endIndex);
   }, [currentPage, filteredModels]);
 
-  const totalPages = Math.ceil(filteredModels.length / ITEMS_PER_PAGE);
-
+  const totalPages = useMemo(() => {
+    if (!filteredModels.length) return 0;
+    return Math.ceil(filteredModels.length / ITEMS_PER_PAGE);
+  }, [filteredModels]);
+  
   const allSpecialties = useMemo(() => {
-      if (allModels.length === 0) return [];
-      return [...new Set(allModels.flatMap(m => m.specialties))];
+      if (!allModels.length) return [];
+      const specialtiesSet = new Set(allModels.flatMap(m => m.specialties));
+      return Array.from(specialtiesSet);
   }, [allModels]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
