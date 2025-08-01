@@ -156,11 +156,3 @@ export default function ModelProfilePage({ params }: { params: { id: string } })
   );
 }
 
-export async function generateStaticParams() {
-  const res = await fetch(new URL('/models.json', process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:9002').href);
-  const models: Model[] = await res.json();
- 
-  return models.map((model) => ({
-    id: model.id,
-  }))
-}

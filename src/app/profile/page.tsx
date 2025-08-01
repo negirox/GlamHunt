@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { Separator } from '@/components/ui/separator';
 import { getRegistrations } from '../admin/actions';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useRouter } from 'next/navigation';
 
 
 type Registration = {
@@ -22,6 +23,7 @@ type Registration = {
 export default function ProfilePage() {
   const [user, setUser] = useState<Registration | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchProfile() {
@@ -55,6 +57,16 @@ export default function ProfilePage() {
     }
   }
 
+  const handleLogout = () => {
+    // Clear localStorage/sessionStorage if you store tokens there
+    localStorage.removeItem('authToken');
+    sessionStorage.removeItem('authToken');
+    // Optionally clear cookies (if using cookies for auth)
+    document.cookie = "authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    setUser(null);
+    router.push('/auth/login');
+  };
+
   if (loading) {
     return <div className="container mx-auto px-4 py-8 text-center">Loading profile...</div>;
   }
@@ -81,9 +93,14 @@ export default function ProfilePage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <header className="mb-8">
-        <h1 className="font-headline text-4xl font-bold">Manage Your Profile</h1>
-        <p className="text-muted-foreground">Keep your portfolio and information up to date.</p>
+      <header className="mb-8 flex justify-between items-center">
+        <div>
+          <h1 className="font-headline text-4xl font-bold">Manage Your Profile</h1>
+          <p className="text-muted-foreground">Keep your portfolio and information up to date.</p>
+        </div>
+        <Button variant="outline" onClick={handleLogout}>
+          Logout
+        </Button>
       </header>
       
       <Card className="mb-8">
