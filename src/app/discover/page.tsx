@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
@@ -35,7 +36,7 @@ export default function DiscoverPage() {
     fetchModels();
   }, []);
 
-  const handleSearch = () => {
+  useEffect(() => {
     let tempModels = [...models];
 
     // Filter by specialty
@@ -56,14 +57,8 @@ export default function DiscoverPage() {
 
     setFilteredModels(tempModels);
     setCurrentPage(1); // Reset to first page after search
-  };
+  }, [searchTerm, specialty, models]);
   
-  // Handle search on button click or enter key
-  const onSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleSearch();
-  };
-
   const paginatedModels = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -80,9 +75,9 @@ export default function DiscoverPage() {
         <div className="container mx-auto px-4">
           <h1 className="text-4xl md:text-5xl font-headline font-bold">Discover Models</h1>
           <p className="text-lg text-muted-foreground mt-2">Find the perfect talent for your next project.</p>
-          <form onSubmit={onSearchSubmit} className="bg-background/80 backdrop-blur-sm p-4 sm:p-6 rounded-lg shadow-lg mt-8 max-w-4xl">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
-              <div className="relative col-span-1 sm:col-span-2">
+          <form onSubmit={(e) => e.preventDefault()} className="bg-background/80 backdrop-blur-sm p-4 sm:p-6 rounded-lg shadow-lg mt-8 max-w-4xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-end">
+              <div className="relative col-span-1 sm:col-span-2 lg:col-span-2">
                 <label htmlFor="search" className="block text-sm font-medium text-foreground/80 mb-1 text-left">Search Models</label>
                 <Input 
                   id="search" 
@@ -107,7 +102,6 @@ export default function DiscoverPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <Button type="submit" className="w-full h-10">Search</Button>
             </div>
           </form>
         </div>
