@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { ModelCard } from '@/components/model-card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -8,14 +11,42 @@ import type { Model } from '@/lib/data';
 import fs from 'fs/promises';
 import path from 'path';
 
-async function getModels(): Promise<Model[]> {
-  const filePath = path.join(process.cwd(), 'src', 'lib', 'models.json');
-  const jsonData = await fs.readFile(filePath, 'utf-8');
-  return JSON.parse(jsonData);
+// Fetch models on the client side using an API route or static import
+async function fetchModels(): Promise<Model[]> {
+  const res = await fetch('/models.json');
+  return res.json();
 }
 
-export default async function DiscoverPage() {
-  const models = await getModels();
+export default function DiscoverPage() {
+  const [models, setModels] = useState<Model[]>([]);
+  const [search, setSearch] = useState('');
+  const [specialty, setSpecialty] = useState('');
+  const [filteredModels, setFilteredModels] = useState<Model[]>([]);
+
+  useEffect(() => {
+    fetch('/models.json')
+      .then(res => res.json())
+      .then(data => {
+        setModels(data);
+        setFilteredModels(data);
+      });
+  }, []);
+
+  const handleSearch = () => {
+    let filtered = models;
+    if (search) {
+      filtered = filtered.filter(model =>
+        model.name.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+    if (specialty && specialty !== "all") {
+      filtered = filtered.filter(model =>
+        model.specialties &&
+        model.specialties.map(s => s.toLowerCase()).includes(specialty)
+      );
+    }
+    setFilteredModels(filtered);
+  };
 
   return (
     <>
@@ -27,16 +58,23 @@ export default async function DiscoverPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
               <div className="relative col-span-1 sm:col-span-2">
                  <label htmlFor="search" className="block text-sm font-medium text-foreground/80 mb-1 text-left">Search Models</label>
-                <Input id="search" placeholder="Name, keyword..." className="pl-10" />
+                <Input
+                  id="search"
+                  placeholder="Name, keyword..."
+                  className="pl-10"
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                />
                 <Search className="absolute left-3 top-1/2 -translate-y-[-6px] h-5 w-5 text-muted-foreground" />
               </div>
               <div>
                 <label htmlFor="specialty" className="block text-sm font-medium text-foreground/80 mb-1 text-left">Specialty</label>
-                <Select>
+                <Select value={specialty} onValueChange={setSpecialty}>
                   <SelectTrigger id="specialty">
                     <SelectValue placeholder="All" />
                   </SelectTrigger>
                   <SelectContent>
+                    <SelectItem value="all">All</SelectItem>
                     <SelectItem value="fashion">Fashion</SelectItem>
                     <SelectItem value="commercial">Commercial</SelectItem>
                     <SelectItem value="fitness">Fitness</SelectItem>
@@ -44,7 +82,7 @@ export default async function DiscoverPage() {
                   </SelectContent>
                 </Select>
               </div>
-              <Button className="w-full h-10">Search</Button>
+              <Button className="w-full h-10" onClick={handleSearch}>Search</Button>
             </div>
           </div>
         </div>
@@ -52,7 +90,7 @@ export default async function DiscoverPage() {
 
       <main className="container mx-auto px-4 py-12">
         <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 xl:gap-8">
-          {models.map((model) => (
+          {filteredModels.map((model) => (
             <div key={model.id} className="mb-6 break-inside-avoid">
               <ModelCard model={model} />
             </div>

@@ -1,0 +1,377 @@
+[
+  {
+    "id": "1",
+    "name": "Ananya Sharma",
+    "location": "Mumbai, Maharashtra",
+    "specialties": ["Fashion", "Editorial", "Sabyasachi"],
+    "bio": "Ananya is a versatile fashion model with a striking presence, known for her captivating editorial shoots and runway walks for major Indian designers.",
+    "stats": {
+      "height": "5'9\"",
+      "bust": 32,
+      "waist": 25,
+      "hips": 35,
+      "shoe": 8,
+      "eyes": "Brown",
+      "hair": "Black"
+    },
+    "profileImage": "/assets/m1.jpg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "Priya Singh",
+    "location": "Bangalore, Karnataka",
+    "specialties": ["Haute Couture", "Manish Malhotra"],
+    "bio": "Priya is a rising star in Indian haute couture, thriving in creative projects and working with top designers.",
+    "stats": {
+      "height": "5'8\"",
+      "bust": 33,
+      "waist": 26,
+      "hips": 36,
+      "shoe": 7.5,
+      "eyes": "Black",
+      "hair": "Brown"
+    },
+    "profileImage": "/assets/m11.jpg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "3",
+    "name": "Aisha Khan",
+    "location": "Hyderabad, Telangana",
+    "specialties": ["Commercial", "Bridal", "E-commerce"],
+    "bio": "Aisha's warm smile and expressive eyes make her perfect for commercial and bridal campaigns.",
+    "stats": {
+      "height": "5'7\"",
+      "bust": 34,
+      "waist": 26,
+      "hips": 37,
+      "shoe": 7,
+      "eyes": "Hazel",
+      "hair": "Dark Brown"
+    },
+    "profileImage": "/assets/m13.jpeg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "4",
+    "name": "Meera Iyer",
+    "location": "Chennai, Tamil Nadu",
+    "specialties": ["Ethnic Wear", "Commercial", "Print"],
+    "bio": "Meera possesses a timeless grace and elegance, perfect for traditional and ethnic wear campaigns.",
+    "stats": {
+      "height": "5'6\"",
+      "bust": 33,
+      "waist": 25,
+      "hips": 36,
+      "shoe": 7,
+      "eyes": "Brown",
+      "hair": "Black"
+    },
+    "profileImage": "/assets/m2.jpg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "5",
+    "name": "Sameera Reddy",
+    "location": "Pune, Maharashtra",
+    "specialties": ["Swimwear", "Fitness", "Commercial"],
+    "bio": "Sameera is a fitness enthusiast with a strong and confident presence.",
+    "stats": {
+      "height": "5'10\"",
+      "bust": 34,
+      "waist": 25,
+      "hips": 36,
+      "shoe": 8.5,
+      "eyes": "Dark Brown",
+      "hair": "Black"
+    },
+    "profileImage": "/assets/m18.jpeg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "6",
+    "name": "Neha Verma",
+    "location": "Lucknow, Uttar Pradesh",
+    "specialties": ["Print", "Commercial"],
+    "bio": "Neha is known for her print and commercial modeling work.",
+    "stats": {
+      "height": "5'7\"",
+      "bust": 32,
+      "waist": 24,
+      "hips": 35,
+      "shoe": 7,
+      "eyes": "Black",
+      "hair": "Black"
+    },
+    "profileImage": "/assets/m3.jpg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "7",
+    "name": "Riya Patel",
+    "location": "Ahmedabad, Gujarat",
+    "specialties": ["Fashion", "Editorial"],
+    "bio": "Riya is a talented editorial and fashion model.",
+    "stats": {
+      "height": "5'8\"",
+      "bust": 33,
+      "waist": 25,
+      "hips": 36,
+      "shoe": 7.5,
+      "eyes": "Brown",
+      "hair": "Brown"
+    },
+    "profileImage": "/assets/m4.jpg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "8",
+    "name": "Ishita Joshi",
+    "location": "Indore, Madhya Pradesh",
+    "specialties": ["Commercial", "Print"],
+    "bio": "Ishita is a commercial and print model with a vibrant personality.",
+    "stats": {
+      "height": "5'6\"",
+      "bust": 32,
+      "waist": 24,
+      "hips": 34,
+      "shoe": 7,
+      "eyes": "Black",
+      "hair": "Black"
+    },
+    "profileImage": "/assets/m5.jpg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "9",
+    "name": "Sanya Malhotra",
+    "location": "Delhi, Delhi",
+    "specialties": ["Fashion", "Runway"],
+    "bio": "Sanya is a confident runway and fashion model.",
+    "stats": {
+      "height": "5'9\"",
+      "bust": 34,
+      "waist": 26,
+      "hips": 36,
+      "shoe": 8,
+      "eyes": "Brown",
+      "hair": "Black"
+    },
+    "profileImage": "/assets/m7.jpg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "10",
+    "name": "Deepika Rao",
+    "location": "Jaipur, Rajasthan",
+    "specialties": ["Editorial", "Commercial"],
+    "bio": "Deepika is known for her editorial and commercial shoots.",
+    "stats": {
+      "height": "5'8\"",
+      "bust": 33,
+      "waist": 25,
+      "hips": 35,
+      "shoe": 7.5,
+      "eyes": "Black",
+      "hair": "Brown"
+    },
+    "profileImage": "/assets/m8.jpeg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "11",
+    "name": "Shreya Banerjee",
+    "location": "Kolkata, West Bengal",
+    "specialties": ["Fashion", "Editorial"],
+    "bio": "Shreya is a creative editorial and fashion model.",
+    "stats": {
+      "height": "5'7\"",
+      "bust": 32,
+      "waist": 24,
+      "hips": 35,
+      "shoe": 7,
+      "eyes": "Black",
+      "hair": "Black"
+    },
+    "profileImage": "/assets/m9.jpeg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "12",
+    "name": "Pooja Nair",
+    "location": "Thiruvananthapuram, Kerala",
+    "specialties": ["Commercial", "Print"],
+    "bio": "Pooja is a commercial and print model with a vibrant personality.",
+    "stats": {
+      "height": "5'6\"",
+      "bust": 32,
+      "waist": 24,
+      "hips": 34,
+      "shoe": 7,
+      "eyes": "Black",
+      "hair": "Black"
+    },
+    "profileImage": "/assets/m10.jpg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "13",
+    "name": "Kavya Pillai",
+    "location": "Kochi, Kerala",
+    "specialties": ["Fashion", "Runway"],
+    "bio": "Kavya is a confident runway and fashion model.",
+    "stats": {
+      "height": "5'9\"",
+      "bust": 34,
+      "waist": 26,
+      "hips": 36,
+      "shoe": 8,
+      "eyes": "Brown",
+      "hair": "Black"
+    },
+    "profileImage": "/assets/m12.jpg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "14",
+    "name": "Tanvi Deshmukh",
+    "location": "Nagpur, Maharashtra",
+    "specialties": ["Editorial", "Commercial"],
+    "bio": "Tanvi is known for her editorial and commercial shoots.",
+    "stats": {
+      "height": "5'8\"",
+      "bust": 33,
+      "waist": 25,
+      "hips": 35,
+      "shoe": 7.5,
+      "eyes": "Black",
+      "hair": "Brown"
+    },
+    "profileImage": "/assets/M20.jpg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  },
+  {
+    "id": "15",
+    "name": "Simran Kaur",
+    "location": "Amritsar, Punjab",
+    "specialties": ["Fashion", "Editorial"],
+    "bio": "Simran is a creative editorial and fashion model.",
+    "stats": {
+      "height": "5'7\"",
+      "bust": 32,
+      "waist": 24,
+      "hips": 35,
+      "shoe": 7,
+      "eyes": "Black",
+      "hair": "Black"
+    },
+    "profileImage": "/assets/m15.jpeg",
+    "images": [
+      { "url": "https://placehold.co/600x800.png", "hint": "indian fashion editorial" },
+      { "url": "https://placehold.co/600x800.png", "hint": "studio portrait" },
+      { "url": "https://placehold.co/800x600.png", "hint": "urban indian fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "beauty shot" },
+      { "url": "https://placehold.co/800x600.png", "hint": "runway fashion" },
+      { "url": "https://placehold.co/600x800.png", "hint": "ethnic wear" }
+    ]
+  }
+]
