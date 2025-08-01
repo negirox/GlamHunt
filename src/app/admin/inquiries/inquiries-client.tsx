@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -18,6 +19,11 @@ import { ReplyInquiryDialog } from '@/components/reply-inquiry-dialog';
 export function InquiriesClient({ initialData }: { initialData: any[] }) {
   const [data, setData] = React.useState(initialData);
   const [selectedInquiry, setSelectedInquiry] = React.useState<any | null>(null);
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleReplied = (repliedInquiry: any) => {
     setData(prevData =>
@@ -64,7 +70,7 @@ export function InquiriesClient({ initialData }: { initialData: any[] }) {
                   )}
                 </TableCell>
                  <TableCell>
-                  {formatDistanceToNow(new Date(item.submittedAt), { addSuffix: true })}
+                  {isClient ? formatDistanceToNow(new Date(item.submittedAt), { addSuffix: true }) : ''}
                 </TableCell>
                 <TableCell className="text-right">
                   <Button variant="outline" size="sm" onClick={() => setSelectedInquiry(item)}>
