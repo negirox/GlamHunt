@@ -1,24 +1,27 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { ArrowRight } from 'lucide-react';
 import type { Model } from '@/lib/data';
-import fs from 'fs/promises';
-import path from 'path';
 import { ModelCard } from '@/components/model-card';
 
-async function getModels(): Promise<Model[]> {
-  const filePath = path.join(process.cwd(), 'src', 'lib', 'models.json');
-  const jsonData = await fs.readFile(filePath, 'utf-8');
-  return JSON.parse(jsonData);
-}
+export default function Home() {
+  const [models, setModels] = useState<Model[]>([]);
+  const [featuredModels, setFeaturedModels] = useState<Model[]>([]);
 
-
-export default async function Home() {
-    const models = await getModels();
-    const featuredModels = models.slice(0, 4);
+  useEffect(() => {
+    fetch('/models.json')
+      .then(res => res.json())
+      .then(data => {
+        setModels(data);
+        setFeaturedModels(data.slice(0, 4));
+      });
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -38,11 +41,12 @@ export default async function Home() {
                   <CarouselItem key={index}>
                     <div className="relative h-[60vh] min-h-[400px] overflow-hidden rounded-xl">
                       <Image
-                        src={model.images[0].url}
+                        src={model.profileImage}
                         alt={`Image of ${model.name}`}
                         fill
                         className="object-cover"
                         data-ai-hint="fashion runway"
+                        priority={index === 0} // Only the first image gets priority
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       <div className="absolute bottom-0 left-0 p-8 text-white">
@@ -77,7 +81,7 @@ export default async function Home() {
             </div>
             <div className="flex justify-center">
               <Image
-                src="https://placehold.co/600x400.png"
+                src="/assets/M20.jpg"
                 width="600"
                 height="400"
                 alt="About GlamHunt"
@@ -88,25 +92,25 @@ export default async function Home() {
           </div>
         </section>
 
-         {/* Featured Models Section */}
+        {/* Featured Models Section */}
         <section className="w-full py-12 md:py-24 lg:py-32">
-             <div className="container px-4 md:px-6">
-                 <div className="flex justify-between items-center mb-8">
-                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Featured Models</h2>
-                    <Button asChild variant="outline">
-                        <Link href="/discover">
-                            Discover All <ArrowRight className="ml-2" />
-                        </Link>
-                    </Button>
+          <div className="container px-4 md:px-6">
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Featured Models</h2>
+              <Button asChild variant="outline">
+                <Link href="/discover">
+                  Discover All <ArrowRight className="ml-2" />
+                </Link>
+              </Button>
+            </div>
+            <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 xl:gap-8">
+              {featuredModels.map((model) => (
+                <div key={model.id} className="mb-6 break-inside-avoid">
+                  <ModelCard model={model} />
                 </div>
-                <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 xl:gap-8">
-                  {featuredModels.map((model) => (
-                    <div key={model.id} className="mb-6 break-inside-avoid">
-                      <ModelCard model={model} />
-                    </div>
-                  ))}
-                </div>
-             </div>
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* CTA Section */}

@@ -8,7 +8,7 @@ export default function AboutPage() {
     <div className="bg-background text-foreground">
       <main>
         {/* Hero Section */}
-        <section className="relative h-[50vh] min-h-[300px] flex items-center justify-center text-center bg-cover bg-center" style={{backgroundImage: "url('https://placehold.co/1920x800.png')"}} data-ai-hint="team of photographers">
+        <section className="relative h-[50vh] min-h-[300px] flex items-center justify-center text-center bg-cover bg-center" style={{backgroundImage: "url('/assets/m18.jpeg')"}} data-ai-hint="team of photographers">
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent"></div>
           <div className="relative z-10 container mx-auto px-4 text-white">
             <h1 className="text-5xl md:text-7xl font-headline font-bold text-white drop-shadow-lg">Our Mission</h1>
@@ -51,7 +51,7 @@ export default function AboutPage() {
               </div>
               <div>
                 <Image 
-                  src="https://placehold.co/800x1000.png"
+                  src="/assets/M16.jpg"
                   alt="Fashion model posing"
                   width={800}
                   height={1000}
