@@ -1,12 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { ModelCard } from '@/components/model-card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Search, Loader2 } from 'lucide-react';
 import type { Model } from '@/lib/data';
+import { Pagination } from '@/components/ui/pagination';
+
+const ITEMS_PER_PAGE = 8;
 
 export default function DiscoverPage() {
   const [models, setModels] = useState<Model[]>([]);
@@ -14,6 +17,7 @@ export default function DiscoverPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [specialty, setSpecialty] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     async function fetchModels() {
@@ -30,7 +34,7 @@ export default function DiscoverPage() {
     }
     fetchModels();
   }, []);
-  
+
   const handleSearch = () => {
     let tempModels = [...models];
 
@@ -51,6 +55,7 @@ export default function DiscoverPage() {
     }
 
     setFilteredModels(tempModels);
+    setCurrentPage(1); // Reset to first page after search
   };
   
   // Handle search on button click or enter key
@@ -58,6 +63,14 @@ export default function DiscoverPage() {
     e.preventDefault();
     handleSearch();
   };
+
+  const paginatedModels = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    return filteredModels.slice(startIndex, endIndex);
+  }, [currentPage, filteredModels]);
+
+  const totalPages = Math.ceil(filteredModels.length / ITEMS_PER_PAGE);
 
   const allSpecialties = [...new Set(models.flatMap(m => m.specialties))];
 
@@ -106,13 +119,22 @@ export default function DiscoverPage() {
                 <Loader2 className="h-10 w-10 animate-spin text-primary" />
             </div>
         ) : filteredModels.length > 0 ? (
-          <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 xl:gap-8">
-            {filteredModels.map((model) => (
-              <div key={model.id} className="mb-6 break-inside-avoid">
-                <ModelCard model={model} />
-              </div>
-            ))}
-          </div>
+          <>
+            <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 xl:gap-8">
+              {paginatedModels.map((model) => (
+                <div key={model.id} className="mb-6 break-inside-avoid">
+                  <ModelCard model={model} />
+                </div>
+              ))}
+            </div>
+            <div className="mt-12">
+               <Pagination 
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+               />
+            </div>
+          </>
         ) : (
             <div className="text-center py-20">
                 <h2 className="text-2xl font-semibold">No Models Found</h2>
