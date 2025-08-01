@@ -23,6 +23,7 @@ export default function DiscoverPage() {
   useEffect(() => {
     async function fetchModels() {
       try {
+        setLoading(true);
         const res = await fetch('/models.json');
         const data = await res.json();
         setModels(data);
@@ -67,7 +68,9 @@ export default function DiscoverPage() {
 
   const totalPages = Math.ceil(filteredModels.length / ITEMS_PER_PAGE);
 
-  const allSpecialties = [...new Set(models.flatMap(m => m.specialties))];
+  const allSpecialties = useMemo(() => {
+      return [...new Set(models.flatMap(m => m.specialties))];
+  }, [models]);
 
   return (
     <>
@@ -121,13 +124,15 @@ export default function DiscoverPage() {
                 </div>
               ))}
             </div>
-            <div className="mt-12">
-               <Pagination 
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-               />
-            </div>
+            {totalPages > 1 && (
+              <div className="mt-12">
+                 <Pagination 
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                 />
+              </div>
+            )}
           </>
         ) : (
             <div className="text-center py-20">
