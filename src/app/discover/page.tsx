@@ -13,7 +13,7 @@ import { Pagination } from '@/components/ui/pagination';
 const ITEMS_PER_PAGE = 8;
 
 export default function DiscoverPage() {
-  const [models, setModels] = useState<Model[]>([]);
+  const [allModels, setAllModels] = useState<Model[]>([]);
   const [filteredModels, setFilteredModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -26,7 +26,7 @@ export default function DiscoverPage() {
         setLoading(true);
         const res = await fetch('/models.json');
         const data = await res.json();
-        setModels(data);
+        setAllModels(data);
         setFilteredModels(data);
       } catch (error) {
         console.error('Failed to fetch models:', error);
@@ -38,7 +38,7 @@ export default function DiscoverPage() {
   }, []);
 
   useEffect(() => {
-    let tempModels = [...models];
+    let tempModels = [...allModels];
 
     // Filter by specialty
     if (specialty !== 'all') {
@@ -57,8 +57,8 @@ export default function DiscoverPage() {
     }
 
     setFilteredModels(tempModels);
-    setCurrentPage(1); // Reset to first page after search
-  }, [searchTerm, specialty, models]);
+    setCurrentPage(1); // Reset to first page after filtering
+  }, [searchTerm, specialty, allModels]);
   
   const paginatedModels = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -69,8 +69,8 @@ export default function DiscoverPage() {
   const totalPages = Math.ceil(filteredModels.length / ITEMS_PER_PAGE);
 
   const allSpecialties = useMemo(() => {
-      return [...new Set(models.flatMap(m => m.specialties))];
-  }, [models]);
+      return [...new Set(allModels.flatMap(m => m.specialties))];
+  }, [allModels]);
 
   return (
     <>
