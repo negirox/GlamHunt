@@ -14,7 +14,6 @@ const ITEMS_PER_PAGE = 8;
 
 export default function DiscoverPage() {
   const [allModels, setAllModels] = useState<Model[]>([]);
-  const [filteredModels, setFilteredModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [specialty, setSpecialty] = useState('all');
@@ -25,9 +24,11 @@ export default function DiscoverPage() {
       try {
         setLoading(true);
         const res = await fetch('/models.json');
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
         const data = await res.json();
         setAllModels(data);
-        setFilteredModels(data);
       } catch (error) {
         console.error('Failed to fetch models:', error);
       } finally {
@@ -36,30 +37,34 @@ export default function DiscoverPage() {
     }
     fetchModels();
   }, []);
+  
+  const filteredModels = useMemo(() => {
+    if (loading) return [];
 
-  useEffect(() => {
     let tempModels = [...allModels];
 
-    // Filter by specialty
     if (specialty !== 'all') {
-      tempModels = tempModels.filter(model => 
+      tempModels = tempModels.filter(model =>
         model.specialties.some(s => s.toLowerCase() === specialty.toLowerCase())
       );
     }
     
-    // Filter by search term
-    if (searchTerm) {
+    if (searchTerm.trim()) {
+      const lowercasedSearchTerm = searchTerm.toLowerCase().trim();
       tempModels = tempModels.filter(model =>
-        model.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        model.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        model.specialties.some(s => s.toLowerCase().includes(searchTerm.toLowerCase()))
+        model.name.toLowerCase().includes(lowercasedSearchTerm) ||
+        model.location.toLowerCase().includes(lowercasedSearchTerm) ||
+        model.specialties.some(s => s.toLowerCase().includes(lowercasedSearchTerm))
       );
     }
+    
+    return tempModels;
+  }, [searchTerm, specialty, allModels, loading]);
 
-    setFilteredModels(tempModels);
-    setCurrentPage(1); // Reset to first page after filtering
-  }, [searchTerm, specialty, allModels]);
-  
+  useEffect(() => {
+      setCurrentPage(1); // Reset page to 1 whenever filters change
+  }, [searchTerm, specialty]);
+
   const paginatedModels = useMemo(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -69,8 +74,17 @@ export default function DiscoverPage() {
   const totalPages = Math.ceil(filteredModels.length / ITEMS_PER_PAGE);
 
   const allSpecialties = useMemo(() => {
+      if (allModels.length === 0) return [];
       return [...new Set(allModels.flatMap(m => m.specialties))];
   }, [allModels]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSpecialtyChange = (value: string) => {
+    setSpecialty(value);
+  };
 
   return (
     <>
@@ -87,13 +101,13 @@ export default function DiscoverPage() {
                   placeholder="Name, keyword..." 
                   className="pl-10" 
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={handleSearchChange}
                 />
                 <Search className="absolute left-3 top-1/2 -translate-y-[-6px] h-5 w-5 text-muted-foreground" />
               </div>
               <div>
                 <label htmlFor="specialty" className="block text-sm font-medium text-foreground/80 mb-1 text-left">Specialty</label>
-                <Select value={specialty} onValueChange={setSpecialty}>
+                <Select value={specialty} onValueChange={handleSpecialtyChange}>
                   <SelectTrigger id="specialty">
                     <SelectValue placeholder="All" />
                   </SelectTrigger>
@@ -115,7 +129,7 @@ export default function DiscoverPage() {
             <div className="flex justify-center items-center py-20">
                 <Loader2 className="h-10 w-10 animate-spin text-primary" />
             </div>
-        ) : filteredModels.length > 0 ? (
+        ) : paginatedModels.length > 0 ? (
           <>
             <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 xl:gap-8">
               {paginatedModels.map((model) => (
